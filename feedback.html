@@ -2,30 +2,190 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Survey Feedback</title>
+  <title>Learning Barriers Survey Results</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
-    .result { margin-top: 50px; font-size: 1.2rem; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .result {
+      margin: 30px 0;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+    }
+    
+    .score {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #3498db;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .interpretation {
+      font-size: 1.2rem;
+      color: #2c3e50;
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    
+    .recommendations {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #e8f4fd;
+      border-radius: 8px;
+    }
+    
+    .recommendations h2 {
+      color: #2c3e50;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+    
+    .recommendations ul {
+      text-align: left;
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .recommendations li {
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+    
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    
+    .back-button:hover {
+      background-color: #2980b9;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      text-align: center;
+      padding: 20px;
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Your Survey Results</h1>
-  <div class="result">
-    <p id="scoreDisplay"></p>
-    <p id="interpretationDisplay"></p>
+  <div class="container">
+    <h1>Learning Barriers Survey Results</h1>
+    <div id="error-message" class="error-message">
+      Unable to load survey results. Please try again.
+    </div>
+    <div id="results-container">
+      <div class="result">
+        <div id="scoreDisplay" class="score"></div>
+        <div id="interpretationDisplay" class="interpretation"></div>
+      </div>
+      
+      <div class="recommendations">
+        <h2>Recommended Next Steps</h2>
+        <ul id="recommendationsList">
+          <!-- Recommendations will be added here by JavaScript -->
+        </ul>
+      </div>
+      
+      <div style="text-align: center;">
+        <a href="index.html" class="back-button">Return to Survey</a>
+      </div>
+    </div>
   </div>
+
   <script>
-    // Function to get values from the URL (score and interpretation)
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
     
-    const score = getQueryParam('score');
-    const interpretation = getQueryParam('interpretation');
+    function displayResults() {
+      try {
+        const score = getQueryParam('score');
+        const interpretation = getQueryParam('interpretation');
+        
+        if (!score || !interpretation) {
+          throw new Error('Missing survey results');
+        }
+        
+        document.getElementById('scoreDisplay').innerText = `Total Score: ${score}/80`;
+        document.getElementById('interpretationDisplay').innerText = interpretation;
+        
+        // Generate recommendations based on score
+        const recommendations = getRecommendations(parseInt(score));
+        const recommendationsList = document.getElementById('recommendationsList');
+        recommendations.forEach(rec => {
+          const li = document.createElement('li');
+          li.textContent = rec;
+          recommendationsList.appendChild(li);
+        });
+        
+      } catch (error) {
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('results-container').style.display = 'none';
+      }
+    }
     
-    document.getElementById('scoreDisplay').innerText = "Your Score: " + score;
-    document.getElementById('interpretationDisplay').innerText = "Interpretation: " + interpretation;
+    function getRecommendations(score) {
+      const recommendations = [];
+      
+      // General recommendations
+      recommendations.push("Schedule a meeting with your academic advisor to discuss these results and create an action plan.");
+      
+      if (score >= 16 && score <= 32) {
+        recommendations.push("Continue your current study habits while looking for ways to optimize your learning.");
+        recommendations.push("Consider mentoring other students who may be facing more significant barriers.");
+      } else if (score >= 33 && score <= 48) {
+        recommendations.push("Identify specific areas where you face the most challenges and focus on addressing them first.");
+        recommendations.push("Explore available academic support services at your institution.");
+        recommendations.push("Consider joining study groups or finding a study buddy.");
+      } else if (score >= 49 && score <= 64) {
+        recommendations.push("Seek immediate support from academic advisors and counseling services.");
+        recommendations.push("Break down your learning goals into smaller, manageable tasks.");
+        recommendations.push("Explore alternative learning methods that might better suit your needs.");
+        recommendations.push("Consider time management workshops or coaching.");
+      } else if (score >= 65 && score <= 80) {
+        recommendations.push("Schedule an urgent meeting with your academic advisor or counselor.");
+        recommendations.push("Look into learning accommodation services available at your institution.");
+        recommendations.push("Consider a comprehensive educational assessment.");
+        recommendations.push("Develop a structured support plan with your teachers and advisors.");
+      }
+      
+      return recommendations;
+    }
+    
+    // Initialize the page
+    window.onload = displayResults;
   </script>
 </body>
 </html>
