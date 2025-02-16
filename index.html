@@ -7,249 +7,238 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      padding-bottom: 40px;
     }
     fieldset {
       margin-bottom: 20px;
       padding: 10px;
       border: 1px solid #ccc;
+      border-radius: 5px;
     }
     legend {
       font-weight: bold;
       margin-bottom: 10px;
+      padding: 0 5px;
+      color: #333;
     }
     label {
       margin-right: 10px;
+      cursor: pointer;
+    }
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 5px;
     }
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 1rem;
       cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .input-field {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.9);
+      z-index: 1000;
+    }
+    .loading-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #errorMessage {
+      display: none;
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
+  <div id="loadingOverlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <div>Submitting your response...</div>
+    </div>
+  </div>
+
+  <div id="errorMessage"></div>
+
   <h1>Barriers to Learning Survey</h1>
-  <form id="surveyForm">
-    <!-- Student Name and Email -->
-    <label for="studentName">Name:</label>
-    <input type="text" id="studentName" name="studentName" required>
-    <br><br>
-    <label for="studentEmail">Email (optional):</label>
-    <input type="email" id="studentEmail" name="studentEmail">
-    <br><br>
-    
-    <!-- 1. Motivation -->
-    <fieldset>
-      <legend>1. Motivation: I often lack interest or motivation to learn.</legend>
-      <label><input type="radio" name="motivation" value="1" required> 1</label>
-      <label><input type="radio" name="motivation" value="2"> 2</label>
-      <label><input type="radio" name="motivation" value="3"> 3</label>
-      <label><input type="radio" name="motivation" value="4"> 4</label>
-      <label><input type="radio" name="motivation" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 2. Cognitive Challenges -->
-    <fieldset>
-      <legend>2. Cognitive Challenges: I find it difficult to concentrate on or remember what I’m taught.</legend>
-      <label><input type="radio" name="cognitive" value="1" required> 1</label>
-      <label><input type="radio" name="cognitive" value="2"> 2</label>
-      <label><input type="radio" name="cognitive" value="3"> 3</label>
-      <label><input type="radio" name="cognitive" value="4"> 4</label>
-      <label><input type="radio" name="cognitive" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 3. Emotional Factors -->
-    <fieldset>
-      <legend>3. Emotional Factors: Stress, anxiety, or negative emotions hinder my ability to learn.</legend>
-      <label><input type="radio" name="emotional" value="1" required> 1</label>
-      <label><input type="radio" name="emotional" value="2"> 2</label>
-      <label><input type="radio" name="emotional" value="3"> 3</label>
-      <label><input type="radio" name="emotional" value="4"> 4</label>
-      <label><input type="radio" name="emotional" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 4. Physical Health -->
-    <fieldset>
-      <legend>4. Physical Health: My physical health (e.g., fatigue, illness) makes it hard to focus.</legend>
-      <label><input type="radio" name="physical" value="1" required> 1</label>
-      <label><input type="radio" name="physical" value="2"> 2</label>
-      <label><input type="radio" name="physical" value="3"> 3</label>
-      <label><input type="radio" name="physical" value="4"> 4</label>
-      <label><input type="radio" name="physical" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 5. Attitude and Mindset -->
-    <fieldset>
-      <legend>5. Attitude and Mindset: I feel like I’m not capable of learning or improving.</legend>
-      <label><input type="radio" name="attitude" value="1" required> 1</label>
-      <label><input type="radio" name="attitude" value="2"> 2</label>
-      <label><input type="radio" name="attitude" value="3"> 3</label>
-      <label><input type="radio" name="attitude" value="4"> 4</label>
-      <label><input type="radio" name="attitude" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 6. Language Barriers -->
-    <fieldset>
-      <legend>6. Language Barriers: I struggle to understand the language used in my learning materials.</legend>
-      <label><input type="radio" name="language" value="1" required> 1</label>
-      <label><input type="radio" name="language" value="2"> 2</label>
-      <label><input type="radio" name="language" value="3"> 3</label>
-      <label><input type="radio" name="language" value="4"> 4</label>
-      <label><input type="radio" name="language" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 7. Environmental Factors -->
-    <fieldset>
-      <legend>7. Environmental Factors: My study environment is noisy, distracting, or uncomfortable.</legend>
-      <label><input type="radio" name="environmental" value="1" required> 1</label>
-      <label><input type="radio" name="environmental" value="2"> 2</label>
-      <label><input type="radio" name="environmental" value="3"> 3</label>
-      <label><input type="radio" name="environmental" value="4"> 4</label>
-      <label><input type="radio" name="environmental" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 8. Socioeconomic Factors -->
-    <fieldset>
-      <legend>8. Socioeconomic Factors: I don’t have access to necessary resources (e.g., books, internet, tools).</legend>
-      <label><input type="radio" name="socioeconomic" value="1" required> 1</label>
-      <label><input type="radio" name="socioeconomic" value="2"> 2</label>
-      <label><input type="radio" name="socioeconomic" value="3"> 3</label>
-      <label><input type="radio" name="socioeconomic" value="4"> 4</label>
-      <label><input type="radio" name="socioeconomic" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 9. Cultural/Social Barriers -->
-    <fieldset>
-      <legend>9. Cultural/Social Barriers: I feel excluded or unsupported because of my background or identity.</legend>
-      <label><input type="radio" name="cultural" value="1" required> 1</label>
-      <label><input type="radio" name="cultural" value="2"> 2</label>
-      <label><input type="radio" name="cultural" value="3"> 3</label>
-      <label><input type="radio" name="cultural" value="4"> 4</label>
-      <label><input type="radio" name="cultural" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 10. Teaching Methods -->
-    <fieldset>
-      <legend>10. Teaching Methods: The way I’m taught doesn’t match my learning style or needs.</legend>
-      <label><input type="radio" name="teaching" value="1" required> 1</label>
-      <label><input type="radio" name="teaching" value="2"> 2</label>
-      <label><input type="radio" name="teaching" value="3"> 3</label>
-      <label><input type="radio" name="teaching" value="4"> 4</label>
-      <label><input type="radio" name="teaching" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 11. Technological Barriers -->
-    <fieldset>
-      <legend>11. Technological Barriers: I struggle with using technology or lack access to digital tools.</legend>
-      <label><input type="radio" name="technological" value="1" required> 1</label>
-      <label><input type="radio" name="technological" value="2"> 2</label>
-      <label><input type="radio" name="technological" value="3"> 3</label>
-      <label><input type="radio" name="technological" value="4"> 4</label>
-      <label><input type="radio" name="technological" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 12. Time Management -->
-    <fieldset>
-      <legend>12. Time Management: I don’t have enough time to study due to other commitments.</legend>
-      <label><input type="radio" name="time" value="1" required> 1</label>
-      <label><input type="radio" name="time" value="2"> 2</label>
-      <label><input type="radio" name="time" value="3"> 3</label>
-      <label><input type="radio" name="time" value="4"> 4</label>
-      <label><input type="radio" name="time" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 13. Organizational Skills -->
-    <fieldset>
-      <legend>13. Organizational Skills: I struggle with keeping my study materials and assignments organized.</legend>
-      <label><input type="radio" name="organization" value="1" required> 1</label>
-      <label><input type="radio" name="organization" value="2"> 2</label>
-      <label><input type="radio" name="organization" value="3"> 3</label>
-      <label><input type="radio" name="organization" value="4"> 4</label>
-      <label><input type="radio" name="organization" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 14. Procrastination -->
-    <fieldset>
-      <legend>14. Procrastination: I frequently delay starting assignments or studying, which negatively impacts my academic performance.</legend>
-      <label><input type="radio" name="procrastination" value="1" required> 1</label>
-      <label><input type="radio" name="procrastination" value="2"> 2</label>
-      <label><input type="radio" name="procrastination" value="3"> 3</label>
-      <label><input type="radio" name="procrastination" value="4"> 4</label>
-      <label><input type="radio" name="procrastination" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 15. Learning Strategies -->
-    <fieldset>
-      <legend>15. Learning Strategies: I have difficulty applying effective learning techniques (e.g., note-taking, summarizing, reviewing) to understand and retain information.</legend>
-      <label><input type="radio" name="learningStrategies" value="1" required> 1</label>
-      <label><input type="radio" name="learningStrategies" value="2"> 2</label>
-      <label><input type="radio" name="learningStrategies" value="3"> 3</label>
-      <label><input type="radio" name="learningStrategies" value="4"> 4</label>
-      <label><input type="radio" name="learningStrategies" value="5"> 5</label>
-    </fieldset>
-    
-    <!-- 16. Peer Support -->
-    <fieldset>
-      <legend>16. Peer Support: I feel that I lack sufficient academic support from my peers.</legend>
-      <label><input type="radio" name="peerSupport" value="1" required> 1</label>
-      <label><input type="radio" name="peerSupport" value="2"> 2</label>
-      <label><input type="radio" name="peerSupport" value="3"> 3</label>
-      <label><input type="radio" name="peerSupport" value="4"> 4</label>
-      <label><input type="radio" name="peerSupport" value="5"> 5</label>
-    </fieldset>
-    
-    <button type="submit">Submit</button>
-  </form>
+  <p>Rate each statement from 1 (strongly disagree) to 5 (strongly agree)</p>
   
+  <form id="surveyForm">
+    <!-- Student Info -->
+    <div class="form-group">
+      <label for="studentName">Name:</label>
+      <input type="text" id="studentName" name="studentName" class="input-field" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="studentEmail">Email (optional):</label>
+      <input type="email" id="studentEmail" name="studentEmail" class="input-field">
+    </div>
+
+    <!-- Survey Questions -->
+    <!-- [Previous fieldsets remain the same, just add class="radio-group" to the label groups] -->
+    
+    <button type="submit" id="submitButton">Submit Survey</button>
+  </form>
+
   <script>
-    // Replace with your actual Google Apps Script web app URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxUoxgeLiMZJtd42Q0mJeZ3cl9Cj4D8b1kGf-tG30MmkDW4HRQR4Ab1CMJLOzkwed-c8g/exec';
     const form = document.getElementById('surveyForm');
-  
-    form.addEventListener('submit', function(e) {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const errorMessage = document.getElementById('errorMessage');
+    const submitButton = document.getElementById('submitButton');
+
+    // Show loading overlay
+    function showLoading() {
+      loadingOverlay.style.display = 'block';
+      submitButton.disabled = true;
+    }
+
+    // Hide loading overlay
+    function hideLoading() {
+      loadingOverlay.style.display = 'none';
+      submitButton.disabled = false;
+    }
+
+    // Show error message
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      setTimeout(() => {
+        errorMessage.style.display = 'none';
+      }, 5000);
+    }
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      // List of field names for the survey questions
-      const fieldNames = [
-        'motivation', 'cognitive', 'emotional', 'physical', 'attitude', 'language',
-        'environmental', 'socioeconomic', 'cultural', 'teaching', 'technological',
-        'time', 'organization', 'procrastination', 'learningStrategies', 'peerSupport'
-      ];
-      
-      let totalScore = 0;
-      fieldNames.forEach(name => {
-        // Get the value of the checked radio button for each question
-        const value = parseInt(document.querySelector(`input[name="${name}"]:checked`).value, 10);
-        totalScore += value;
-      });
-  
-      // Determine interpretation based on total score
-      let interpretation = "";
-      if (totalScore >= 16 && totalScore <= 32) {
-        interpretation = "Low barriers to learning.";
-      } else if (totalScore >= 33 && totalScore <= 48) {
-        interpretation = "Moderate barriers to learning.";
-      } else if (totalScore >= 49 && totalScore <= 64) {
-        interpretation = "Significant barriers to learning.";
-      } else if (totalScore >= 65 && totalScore <= 80) {
-        interpretation = "Extreme barriers to learning.";
-      }
-  
-      // Prepare form data to send
-      const formData = new FormData(form);
-      formData.append('totalScore', totalScore);
-      formData.append('interpretation', interpretation);
-  
-      // Send data to the Google Apps Script web app
-      fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => {
-          // Redirect to the feedback page with score and interpretation as query parameters
-          window.location.href = "feedback.html?score=" + totalScore + "&interpretation=" + encodeURIComponent(interpretation);
-        })
-        .catch(error => {
-          console.error('Error!', error.message);
-          alert('An error occurred while submitting your response. Please try again later.');
+      try {
+        showLoading();
+        
+        // Validate required fields
+        if (!form.checkValidity()) {
+          throw new Error('Please fill in all required fields.');
+        }
+
+        // Get form data
+        const formData = new FormData(form);
+        const formProps = Object.fromEntries(formData);
+        
+        // Calculate total score
+        const fieldNames = [
+          'motivation', 'cognitive', 'emotional', 'physical', 'attitude', 'language',
+          'environmental', 'socioeconomic', 'cultural', 'teaching', 'technological',
+          'time', 'organization', 'procrastination', 'learningStrategies', 'peerSupport'
+        ];
+        
+        const totalScore = fieldNames.reduce((sum, name) => {
+          const value = parseInt(formProps[name], 10);
+          if (isNaN(value)) {
+            throw new Error(`Please answer all questions before submitting.`);
+          }
+          return sum + value;
+        }, 0);
+
+        // Determine interpretation
+        let interpretation = "";
+        if (totalScore >= 16 && totalScore <= 32) {
+          interpretation = "Low barriers to learning.";
+        } else if (totalScore >= 33 && totalScore <= 48) {
+          interpretation = "Moderate barriers to learning.";
+        } else if (totalScore >= 49 && totalScore <= 64) {
+          interpretation = "Significant barriers to learning.";
+        } else if (totalScore >= 65 && totalScore <= 80) {
+          interpretation = "Extreme barriers to learning.";
+        }
+
+        // Add score and interpretation to the data
+        formProps.totalScore = totalScore;
+        formProps.interpretation = interpretation;
+
+        // Send data
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formProps)
         });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+          // Redirect to feedback page
+          window.location.href = `feedback.html?score=${totalScore}&interpretation=${encodeURIComponent(interpretation)}`;
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError(error.message || 'An error occurred while submitting the form. Please try again.');
+      } finally {
+        hideLoading();
+      }
+    });
+
+    // Add rating scale labels
+    document.querySelectorAll('fieldset').forEach(fieldset => {
+      const labels = fieldset.querySelectorAll('label');
+      const ratingTexts = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
+      labels.forEach((label, index) => {
+        label.title = ratingTexts[index];
+      });
     });
   </script>
 </body>
