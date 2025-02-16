@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Survey Feedback</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
+    .result { margin-top: 50px; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Your Survey Results</h1>
+  <div class="result">
+    <p id="scoreDisplay"></p>
+    <p id="interpretationDisplay"></p>
+  </div>
+  <script>
+    // Function to get values from the URL (score and interpretation)
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+    
+    const score = getQueryParam('score');
+    const interpretation = getQueryParam('interpretation');
+    
+    document.getElementById('scoreDisplay').innerText = "Your Score: " + score;
+    document.getElementById('interpretationDisplay').innerText = "Interpretation: " + interpretation;
+  </script>
+</body>
+</html>
